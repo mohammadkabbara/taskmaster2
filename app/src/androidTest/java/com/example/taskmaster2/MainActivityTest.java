@@ -40,7 +40,7 @@ public class MainActivityTest {
        onView(withId(R.id.goToHome)).perform(click());
         onView(withId(R.id.myTask)).check(matches(withText( username + "’s tasks")));
     }
-
+//////////////////////
     @Test
     public void testAddTaskButton() {
         onView(withId(R.id.addTask2)).perform(click());
