@@ -10,20 +10,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amplifyframework.datastore.generated.model.Todo;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
-    ArrayList<Task> tasksList = new ArrayList<Task>();
-
-    public TaskAdapter(ArrayList<Task> tasksList) {
-        this.tasksList = tasksList;
+    List<Todo> allTasksData = new ArrayList<>();
+    public TaskAdapter(ArrayList<Todo> tasksList) {
+        this.allTasksData = tasksList;
     }
 
 
 
 
-    public  class TaskViewHolder extends RecyclerView.ViewHolder{
-        public Task task;
+    public static  class TaskViewHolder extends RecyclerView.ViewHolder{
+        public Todo task;
         View itemView;
 
         public TaskViewHolder (@NonNull View itemView){
@@ -31,11 +33,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             this.itemView = itemView;
             itemView.setOnClickListener(v -> {
                 Intent goToDetailsPagePutExtra=new Intent(v.getContext(),TaskDetail.class);
-                goToDetailsPagePutExtra.putExtra("taskNameClickListener",tasksList.get(getAdapterPosition()).title);
+                goToDetailsPagePutExtra.putExtra("taskName", task.getTitle());
 //                goToDetailsPagePutExtra.putExtra("taskBodyClickListener",task.body);
 //                goToDetailsPagePutExtra.putExtra("taskStateClickListener",task.state);
                 v.getContext().startActivity(goToDetailsPagePutExtra);
-                Log.d("STRING", Integer.toString(getAdapterPosition()));
+//                Log.d("STRING", Integer.toString(getAdapterPosition()));
             });
         }
     }
@@ -55,18 +57,18 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull TaskAdapter.TaskViewHolder holder, int position) {
-        holder.task = tasksList.get(position);
+        holder.task = allTasksData.get(position);
         TextView title = holder.itemView.findViewById(R.id.TitleText);
         TextView body = holder.itemView.findViewById(R.id.BodyText);
         TextView state = holder.itemView.findViewById(R.id.StateText);
 
-        title.setText(holder.task.title);
-        body.setText(holder.task.body);
-        state.setText(holder.task.state);
+        title.setText(holder.task.getTitle());
+        body.setText(holder.task.getBody());
+        state.setText(holder.task.getState());
     }
 
     @Override
     public int getItemCount() {
-        return tasksList.size();
+        return allTasksData.size();
     }
 }

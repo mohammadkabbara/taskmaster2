@@ -1,45 +1,50 @@
 package com.example.taskmaster2;
-
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.preference.PreferenceManager;
-//import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-//import android.support.v7.widget.LinearLayoutManager;
-//import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
+
+
+import com.amplifyframework.AmplifyException;
+import com.amplifyframework.api.aws.AWSApiPlugin;
+import com.amplifyframework.api.graphql.model.ModelQuery;
+import com.amplifyframework.core.Amplify;
+import com.amplifyframework.datastore.AWSDataStorePlugin;
+import com.amplifyframework.datastore.generated.model.Todo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //////////////lab28//////////////
-        AppDatabase appDatabase;
-//        ArrayList<Task> tasksList = new ArrayList<Task>();
-//        tasksList.add(new Task("Task1" , "This is the Task1" , "assigned"));
-//        tasksList.add(new Task("Task2" , "This is the Task2" , "complete"));
-//        tasksList.add(new Task("Task3" , "This is the Task3" , "   new "));
-        appDatabase = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "tasksDatabase").allowMainThreadQueries().build();
-        List<Task> tasksList = appDatabase.taskDao().getAll();
 
-        RecyclerView tasksListRecyclerView = findViewById(R.id.taskRecyclerView);
-        tasksListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        tasksListRecyclerView.setAdapter(new TaskAdapter((ArrayList<Task>) tasksList));
+        configureAmplify();
 
-        //////////////finish lab28////////////////
 
+        List<Todo> tasks  = new ArrayList<Todo>();
+        tasks=GetData();
+
+        RecyclerView allTasksRecyclerView = findViewById(R.id.taskRecyclerView);
+        allTasksRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        allTasksRecyclerView.setAdapter(new TaskAdapter((ArrayList<Todo>) tasks));
 
 
         Button button2 = findViewById(R.id.addTask2);
@@ -59,7 +64,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent1);
             }
         });
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         Button buttonStings = findViewById(R.id.Settings);
         buttonStings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,5 +113,35 @@ public class MainActivity extends AppCompatActivity {
         String username = sharedPreferences.getString("username", "Your");
         TextView userTasks = findViewById(R.id.myTask);
         userTasks.setText(username+usernameTasks);
+    }
+
+
+
+    private void configureAmplify() {
+
+        try {
+            Amplify.addPlugin(new AWSDataStorePlugin());
+            Amplify.addPlugin(new AWSApiPlugin());
+            Amplify.configure(getApplicationContext());
+
+            Log.i(TAG, "Initialized Amplify");
+        } catch (AmplifyException error) {
+            Log.e(TAG, "Could not initialize Amplify", error);
+        }}
+    private  List<Todo> GetData(){
+        List<Todo> foundExpense=new ArrayList<>();
+
+        Amplify.DataStore.query(
+                Todo.class,
+                queryMatches -> {
+                    while (queryMatches.hasNext()) {
+                        Log.i(TAG, "We got the record successfully");
+                        foundExpense.add(queryMatches.next());
+                    }
+                },
+                error -> {
+                    Log.i(TAG,  "We got an error", error);
+                });
+        return  foundExpense;
     }
 }
