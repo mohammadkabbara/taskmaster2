@@ -5,8 +5,12 @@ mutation CreateTodo(
 ) {
   createTodo(input: $input, condition: $condition) {
     id
-    name
-    description
+    title
+    body
+    state
+    _version
+    _deleted
+    _lastChangedAt
     createdAt
     updatedAt
   }
@@ -17,8 +21,12 @@ mutation UpdateTodo(
 ) {
   updateTodo(input: $input, condition: $condition) {
     id
-    name
-    description
+    title
+    body
+    state
+    _version
+    _deleted
+    _lastChangedAt
     createdAt
     updatedAt
   }
@@ -29,8 +37,12 @@ mutation DeleteTodo(
 ) {
   deleteTodo(input: $input, condition: $condition) {
     id
-    name
-    description
+    title
+    body
+    state
+    _version
+    _deleted
+    _lastChangedAt
     createdAt
     updatedAt
   }

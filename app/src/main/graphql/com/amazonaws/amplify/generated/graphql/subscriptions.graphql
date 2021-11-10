@@ -2,8 +2,12 @@
 subscription OnCreateTodo {
   onCreateTodo {
     id
-    name
-    description
+    title
+    body
+    state
+    _version
+    _deleted
+    _lastChangedAt
     createdAt
     updatedAt
   }
@@ -11,8 +15,12 @@ subscription OnCreateTodo {
 subscription OnUpdateTodo {
   onUpdateTodo {
     id
-    name
-    description
+    title
+    body
+    state
+    _version
+    _deleted
+    _lastChangedAt
     createdAt
     updatedAt
   }
@@ -20,8 +28,12 @@ subscription OnUpdateTodo {
 subscription OnDeleteTodo {
   onDeleteTodo {
     id
-    name
-    description
+    title
+    body
+    state
+    _version
+    _deleted
+    _lastChangedAt
     createdAt
     updatedAt
   }
