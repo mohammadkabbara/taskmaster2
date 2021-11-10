@@ -29,82 +29,121 @@ import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+
     private static final String TAG = "MainActivity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        configureAmplify();
+        try {
+            Amplify.addPlugin(new AWSDataStorePlugin());
+            Amplify.addPlugin(new AWSApiPlugin());
+            Amplify.configure(getApplicationContext());
 
+            Log.i(TAG, "Initialized Amplify");
+        } catch (AmplifyException error) {
+            Log.e(TAG, "Could not initialize Amplify", error);
+        }
 
-        List<Todo> tasks  = new ArrayList<Todo>();
-        tasks=GetData();
+        Button addTask = findViewById(R.id.addTask2);
+        addTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentAddTask = new Intent(MainActivity.this, AddTask.class);
+                startActivity(intentAddTask);
+            }
+        });
+        Button allTasks = findViewById(R.id.allTask);
+        allTasks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentAllTasks = new Intent(MainActivity.this, AllTasks.class);
+                startActivity(intentAllTasks);
+            }
+        });
+
+        findViewById(R.id.Settings).setOnClickListener(view -> {
+            Intent intentSetting = new Intent(MainActivity.this, Settings.class);
+            startActivity(intentSetting);
+        });
+
+//        Button buttonTask1 = findViewById(R.id.button5);
+//        buttonTask1.setOnClickListener(view -> {
+//            Intent intentTaskDetails = new Intent(MainActivity.this, TaskDetail.class);
+//            String task1 = buttonTask1 .getText().toString();
+//            intentTaskDetails.putExtra("title", task1);
+//            startActivity(intentTaskDetails);
+//        });
+//
+//        Button buttonTask2 = findViewById(R.id.button6);
+//        buttonTask2.setOnClickListener(view -> {
+//            Intent intentTaskDetails = new Intent(MainActivity.this, TaskDetail.class);
+//            String task2 = buttonTask2 .getText().toString();
+//            intentTaskDetails.putExtra("title", task2);
+//            startActivity(intentTaskDetails);
+//        });
+//
+//        Button buttonTask3 = findViewById(R.id.button7);
+//        buttonTask3.setOnClickListener(view -> {
+//            Intent intentTaskDetails = new Intent(MainActivity.this, TaskDetail.class);
+//            String task3 = buttonTask3 .getText().toString();
+//            intentTaskDetails.putExtra("title", task3);
+//            startActivity(intentTaskDetails);
+//        });
+
+//        ArrayList<Task> taskData = new ArrayList<>();
+//
+//        taskData.add(new Task("Mercedes", "German Cars Company", "new"));
+//        taskData.add(new Task("Ford", "American Cars Company", "assigned" ));
+//        taskData.add(new Task("Hyundai", "Korean Cars Company", "in progress"));
+//        taskData.add(new Task("Toyota", "Japanese Cars Company", "complete"));
+
+//        List<TaskOld> taskOldData = AppDatabase.getInstance(this).taskDao().getAll();
+
+        List<TaskOld> taskOldData = new ArrayList<>();
+
 
         RecyclerView allTasksRecyclerView = findViewById(R.id.taskRecyclerView);
+
         allTasksRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        allTasksRecyclerView.setAdapter(new TaskAdapter((ArrayList<Todo>) tasks));
 
 
-        Button button2 = findViewById(R.id.addTask2);
-        button2.setOnClickListener(new View.OnClickListener() {
+
+        allTasksRecyclerView.setAdapter(new TaskAdapter(taskOldData, new TaskAdapter.OnTaskItemClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent2 = new Intent(MainActivity.this, AddTask.class);
-                startActivity(intent2);
+            public void onItemClicked(int position) {
+                Intent intentTaskDetails = new Intent(getApplicationContext(), TaskDetail.class);
+                intentTaskDetails.putExtra("title", taskOldData.get(position).title);
+                intentTaskDetails.putExtra("body", taskOldData.get(position).body);
+                intentTaskDetails.putExtra("state", taskOldData.get(position).state);
+                startActivity(intentTaskDetails);
+
+            }
+        }));
+
+        Handler handler = new Handler(Looper.myLooper(), new Handler.Callback() {
+            @Override
+            public boolean handleMessage(@NonNull Message msg) {
+                allTasksRecyclerView.getAdapter().notifyDataSetChanged();
+                return false;
             }
         });
-
-        Button button1 = findViewById(R.id.allTask);
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent1 = new Intent(MainActivity.this, AllTasks.class);
-                startActivity(intent1);
-            }
-        });
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Button buttonStings = findViewById(R.id.Settings);
-        buttonStings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent3 = new Intent(MainActivity.this, Settings.class);
-                startActivity(intent3);
-            }
-        });
-
-
-
-//        Button task1 = findViewById(R.id.task1);
-//        task1.setOnClickListener((view -> {
-//            String taskTitle = task1.getText().toString();
-//            Intent goToTaskDetail = new Intent(MainActivity.this , TaskDetail.class);
-//            goToTaskDetail.putExtra("tasks", taskTitle);
-//            startActivity(goToTaskDetail);
-//        }));
-//
-//        Button task2 = findViewById(R.id.task2);
-//        task2.setOnClickListener((view -> {
-//            String taskTitle = task2.getText().toString();
-//            Intent goToTaskDetail = new Intent(MainActivity.this , TaskDetail.class);
-//            goToTaskDetail.putExtra("tasks", taskTitle);
-//            startActivity(goToTaskDetail);
-//        }));
-//
-//        Button task3 = findViewById(R.id.task3);
-//        task3.setOnClickListener((view -> {
-//            String taskTitle = task3.getText().toString();
-//            Intent goToTaskDetail = new Intent(MainActivity.this , TaskDetail.class);
-//            goToTaskDetail.putExtra("tasks", taskTitle);
-//            startActivity(goToTaskDetail);
-//        }));
-
-
-
+        Amplify.API.query(
+                ModelQuery.list(Todo.class),
+                response -> {
+                    for (Todo todo : response.getData()) {
+                        TaskOld taskOrg = new TaskOld(todo.getTitle(),todo.getBody(),todo.getState());
+                        taskOldData.add(taskOrg);
+                    }
+                    handler.sendEmptyMessage(1);
+                },
+                error -> Log.e("MyAmplifyApp", "Query failure", error)
+        );
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -116,32 +155,4 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-    private void configureAmplify() {
-
-        try {
-            Amplify.addPlugin(new AWSDataStorePlugin());
-            Amplify.addPlugin(new AWSApiPlugin());
-            Amplify.configure(getApplicationContext());
-
-            Log.i(TAG, "Initialized Amplify");
-        } catch (AmplifyException error) {
-            Log.e(TAG, "Could not initialize Amplify", error);
-        }}
-    private  List<Todo> GetData(){
-        List<Todo> foundExpense=new ArrayList<>();
-
-        Amplify.DataStore.query(
-                Todo.class,
-                queryMatches -> {
-                    while (queryMatches.hasNext()) {
-                        Log.i(TAG, "We got the record successfully");
-                        foundExpense.add(queryMatches.next());
-                    }
-                },
-                error -> {
-                    Log.i(TAG,  "We got an error", error);
-                });
-        return  foundExpense;
-    }
 }
