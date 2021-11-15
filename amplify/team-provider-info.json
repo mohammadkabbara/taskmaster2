@@ -26,6 +26,11 @@
 
 
       "AmplifyAppId": "d1qhvs7wla1sez"
+    },
+    "categories": {
+      "auth": {
+        "taskmaster2f4670dc4": {}
+      }
     }
   }
 }

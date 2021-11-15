@@ -38,10 +38,15 @@ public class MainActivity extends AppCompatActivity {
     private TaskAdapter adapter;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String enteredName = sharedPreferences.getString("EnteredText","Write the name");
 
@@ -102,6 +107,20 @@ if (reciveputExtraFromAddTask == null){
                 startActivity(intent3);
             }
 
+        });
+
+
+        Button signOut=findViewById(R.id.logoutBtn);
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Amplify.Auth.signOut(
+                        () -> Log.i("AuthQuickstart", "Signed out successfully"),
+                        error -> Log.e("AuthQuickstart", error.toString())
+                );
+                Intent intent = new Intent(MainActivity.this,SignUpActivity.class);
+                startActivity(intent);
+            }
         });
     }
 
