@@ -47,15 +47,20 @@ public class MainActivity extends AppCompatActivity {
 
 
         String Team = sharedPreferences.getString("Team","noTeam");
-        System.out.println(enteredName);
-        System.out.println("-------------------------------------------------------------------");
-        System.out.println(Team);
+//        System.out.println(enteredName);
+//        System.out.println("-------------------------------------------------------------------");
+//        System.out.println(Team);
 
-
+        String reciveputExtraFromAddTask= getIntent().getStringExtra("STRING_I_NEED");
         TextView personTasks = findViewById(R.id.Message);
         personTasks.setText(enteredName + "'s Tasks");
 
-        configureAmplify();
+        ////////
+if (reciveputExtraFromAddTask == null){
+    configureAmplify();
+}
+////////
+
         creatTeams();
 
 
