@@ -1,100 +1,84 @@
 package com.example.taskmaster2;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
 
 import android.content.Intent;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.RadioButton;
 
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.core.Amplify;
-import com.amplifyframework.datastore.generated.model.Todo;
+import com.amplifyframework.datastore.generated.model.TaskClass;
+
 
 public class AddTask extends AppCompatActivity {
     //    AppDatabase appDatabase;
-    private static final String TAG = "AddTask";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
+//        Button addToDbButton = findViewById(R.id.AddToDB);
+
+        Button addToDbButton = findViewById(R.id.AddToDB);
+        addToDbButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
 
 
-        Button addTaskButton = AddTask.this.findViewById(R.id.addTextTask);
-        addTaskButton.setOnClickListener(view -> {
+                EditText titleField = findViewById(R.id.Field1ID);
+                String title = titleField.getText().toString();
 
-            EditText studentTitle = findViewById(R.id.editTextTaskTitle);
-            String title = studentTitle.getText().toString();
+                EditText bodyField = findViewById(R.id.Field2ID);
+                String body = bodyField.getText().toString();
 
-            EditText Body = findViewById(R.id.editTextDescription);
-            String BodyTodo = (Body.getText().toString());
+                EditText stateField = findViewById(R.id.Field3ID);
+                String state = stateField.getText().toString();
 
-            EditText State = findViewById(R.id.editTextTaskState);
-            String StateTodo = (State.getText().toString());
 
-            dataStore(title, BodyTodo, StateTodo);
-            Toast messageToast = Toast.makeText(getApplicationContext(), "YOU CLICK ME!!", Toast.LENGTH_SHORT);
-            messageToast.show();
-            Intent goToHome = new Intent(AddTask.this, MainActivity.class);
-                startActivity(goToHome);
+                RadioButton b1=findViewById(R.id.radioButton1);
+                RadioButton b2=findViewById(R.id.radioButton2);
+                RadioButton b3=findViewById(R.id.radioButton3);
+
+
+                String id = null;
+                if(b1.isChecked()){
+                    id="1";
+                }
+                else if(b2.isChecked()){
+                    id="2";
+                }
+                else if(b3.isChecked()){
+                    id="3";
+                }
+
+                dataStore(title, body, state,id);
+                System.out.println(  "Task ID is " + title
+                );
+
+                Intent intent = new Intent(AddTask.this, MainActivity.class);
+                startActivity(intent);
+
+            }
+
         });
 
     }
 
-    private void dataStore(String title, String body, String state) {
-        Todo task = Todo.builder().title(title).state(state).body(body).build();
+    private void dataStore(String title, String body, String state,String id) {
+        TaskClass task = TaskClass.builder().teamId(id).title(title).body(body).state(state).build();
 
-        // save with the datastore
-        Amplify.DataStore.save(task, result -> {
-            Log.i(TAG, "Task Saved");
+
+        Amplify.API.mutate(ModelMutation.create(task),succuess-> {
+            Log.i("Add Task", "Saved to DYNAMODB");
         }, error -> {
-            Log.i(TAG, "Task Not Saved");
+            Log.i("Add Task", "error saving to DYNAMODB");
         });
+
     }
+
 }
-//        EditText title = findViewById(R.id.editTextTaskTitle);
-//        EditText body = findViewById(R.id.editTextDescription);
-//        EditText state = findViewById(R.id.editTextTaskState);
-//        button2.setOnClickListener(new View.OnClickListener(){
-
-//            @Override
-//            public void onClick(View view) {
-//
-//
-//                Todo todo = Todo.builder()
-//                        .title(title.getText().toString())
-//                        .body(body.getText().toString())
-//                        .state(state.getText().toString())
-//                        .build();
-//
-//
-//
-//                System.out.println("/////////////////////////////////////////////////////"+
-//                        title +    "/////////////////////////////////////////////////////" );
-//
-//
-//                Amplify.API.mutate(
-//                        ModelMutation.create(todo),
-//                        response -> Log.i("MyAmplifyApp", "Added Todo with id: " + response.getData().getId()),
-//                        error -> Log.e("MyAmplifyApp", "Create failed", error)
-//                );
-////                Task newTask = new Task(title.getText().toString(), body.getText().toString(), state.getText().toString());
-// //               appDatabase = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "tasksDatabase").allowMainThreadQueries().build();
-////                appDatabase.taskDao().insertAll(newTask);
-//                Toast messageToast = Toast.makeText(getApplicationContext(), "YOU CLICK ME!!", Toast.LENGTH_SHORT);
-//                messageToast.show();
-//                Intent goToHome = new Intent(AddTask.this, MainActivity.class);
-//                startActivity(goToHome);
-//
-//
-//            }
-//        });
-
-
-
-

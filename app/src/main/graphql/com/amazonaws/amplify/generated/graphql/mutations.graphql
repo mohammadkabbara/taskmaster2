@@ -1,36 +1,141 @@
 # this is an auto generated file. This will be overwritten
-mutation CreateTodo(
-  $input: CreateTodoInput!
-  $condition: ModelTodoConditionInput
+mutation CreateTeam(
+  $input: CreateTeamInput!
+  $condition: ModelTeamConditionInput
 ) {
-  createTodo(input: $input, condition: $condition) {
+  createTeam(input: $input, condition: $condition) {
     id
     name
-    description
+    tasks {
+      items {
+        id
+        teamID
+        title
+        body
+        state
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
     createdAt
     updatedAt
   }
 }
-mutation UpdateTodo(
-  $input: UpdateTodoInput!
-  $condition: ModelTodoConditionInput
+mutation UpdateTeam(
+  $input: UpdateTeamInput!
+  $condition: ModelTeamConditionInput
 ) {
-  updateTodo(input: $input, condition: $condition) {
+  updateTeam(input: $input, condition: $condition) {
     id
     name
-    description
+    tasks {
+      items {
+        id
+        teamID
+        title
+        body
+        state
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
     createdAt
     updatedAt
   }
 }
-mutation DeleteTodo(
-  $input: DeleteTodoInput!
-  $condition: ModelTodoConditionInput
+mutation DeleteTeam(
+  $input: DeleteTeamInput!
+  $condition: ModelTeamConditionInput
 ) {
-  deleteTodo(input: $input, condition: $condition) {
+  deleteTeam(input: $input, condition: $condition) {
     id
     name
-    description
+    tasks {
+      items {
+        id
+        teamID
+        title
+        body
+        state
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation CreateTaskClass(
+  $input: CreateTaskClassInput!
+  $condition: ModelTaskClassConditionInput
+) {
+  createTaskClass(input: $input, condition: $condition) {
+    id
+    teamID
+    title
+    body
+    state
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation UpdateTaskClass(
+  $input: UpdateTaskClassInput!
+  $condition: ModelTaskClassConditionInput
+) {
+  updateTaskClass(input: $input, condition: $condition) {
+    id
+    teamID
+    title
+    body
+    state
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation DeleteTaskClass(
+  $input: DeleteTaskClassInput!
+  $condition: ModelTaskClassConditionInput
+) {
+  deleteTaskClass(input: $input, condition: $condition) {
+    id
+    teamID
+    title
+    body
+    state
+    _version
+    _deleted
+    _lastChangedAt
     createdAt
     updatedAt
   }
