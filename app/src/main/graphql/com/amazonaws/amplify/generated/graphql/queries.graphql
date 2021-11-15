@@ -1,11 +1,15 @@
 # this is an auto generated file. This will be overwritten
+
 query SyncTeams(
   $filter: ModelTeamFilterInput
+
   $limit: Int
   $nextToken: String
   $lastSync: AWSTimestamp
 ) {
+
   syncTeams(
+
     filter: $filter
     limit: $limit
     nextToken: $nextToken
@@ -13,11 +17,13 @@ query SyncTeams(
   ) {
     items {
       id
+
       name
       tasks {
         nextToken
         startedAt
       }
+
       _version
       _deleted
       _lastChangedAt
@@ -28,6 +34,7 @@ query SyncTeams(
     startedAt
   }
 }
+
 query GetTeam($id: ID!) {
   getTeam(id: $id) {
     id
@@ -48,6 +55,7 @@ query GetTeam($id: ID!) {
       nextToken
       startedAt
     }
+
     _version
     _deleted
     _lastChangedAt
@@ -63,6 +71,7 @@ query ListTeams(
   listTeams(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
+
       name
       tasks {
         nextToken
@@ -129,6 +138,7 @@ query ListTaskClasss(
     items {
       id
       teamID
+
       title
       body
       state

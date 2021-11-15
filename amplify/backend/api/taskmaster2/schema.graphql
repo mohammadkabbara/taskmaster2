@@ -1,4 +1,5 @@
 
+
 type Team @model {
   id: ID!
   name: String!
@@ -12,3 +13,5 @@ type TaskClass @model @key(name: "byTeam", fields: ["teamID", "title"]) {
   body : String
   state : String
 }
+
+

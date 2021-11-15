@@ -2,6 +2,7 @@
 subscription OnCreateTeam {
   onCreateTeam {
     id
+
     name
     tasks {
       items {
@@ -19,6 +20,7 @@ subscription OnCreateTeam {
       nextToken
       startedAt
     }
+
     _version
     _deleted
     _lastChangedAt
@@ -29,6 +31,7 @@ subscription OnCreateTeam {
 subscription OnUpdateTeam {
   onUpdateTeam {
     id
+
     name
     tasks {
       items {
@@ -46,6 +49,7 @@ subscription OnUpdateTeam {
       nextToken
       startedAt
     }
+
     _version
     _deleted
     _lastChangedAt
@@ -56,6 +60,7 @@ subscription OnUpdateTeam {
 subscription OnDeleteTeam {
   onDeleteTeam {
     id
+
     name
     tasks {
       items {
@@ -112,6 +117,7 @@ subscription OnDeleteTaskClass {
   onDeleteTaskClass {
     id
     teamID
+
     title
     body
     state

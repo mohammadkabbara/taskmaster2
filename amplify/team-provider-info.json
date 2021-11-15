@@ -12,6 +12,7 @@
       "AmplifyAppId": "d1qhvs7wla1sez"
     }
   },
+
   "def": {
     "awscloudformation": {
       "AuthRoleName": "amplify-taskmaster2-def-50317-authRole",
@@ -22,6 +23,8 @@
       "UnauthRoleName": "amplify-taskmaster2-def-50317-unauthRole",
       "StackName": "amplify-taskmaster2-def-50317",
       "StackId": "arn:aws:cloudformation:eu-central-1:020882138624:stack/amplify-taskmaster2-def-50317/83aa1930-442e-11ec-934e-067a5fac0e9a",
+
+
       "AmplifyAppId": "d1qhvs7wla1sez"
     },
     "categories": {
