@@ -1,7 +1,94 @@
 # this is an auto generated file. This will be overwritten
-subscription OnCreateTodo {
-  onCreateTodo {
+subscription OnCreateTeam {
+  onCreateTeam {
     id
+
+    name
+    tasks {
+      items {
+        id
+        teamID
+        title
+        body
+        state
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+subscription OnUpdateTeam {
+  onUpdateTeam {
+    id
+
+    name
+    tasks {
+      items {
+        id
+        teamID
+        title
+        body
+        state
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+subscription OnDeleteTeam {
+  onDeleteTeam {
+    id
+
+    name
+    tasks {
+      items {
+        id
+        teamID
+        title
+        body
+        state
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+subscription OnCreateTaskClass {
+  onCreateTaskClass {
+    id
+    teamID
     title
     body
     state
@@ -12,9 +99,10 @@ subscription OnCreateTodo {
     updatedAt
   }
 }
-subscription OnUpdateTodo {
-  onUpdateTodo {
+subscription OnUpdateTaskClass {
+  onUpdateTaskClass {
     id
+    teamID
     title
     body
     state
@@ -25,9 +113,11 @@ subscription OnUpdateTodo {
     updatedAt
   }
 }
-subscription OnDeleteTodo {
-  onDeleteTodo {
+subscription OnDeleteTaskClass {
+  onDeleteTaskClass {
     id
+    teamID
+
     title
     body
     state

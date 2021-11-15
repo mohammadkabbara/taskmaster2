@@ -1,11 +1,15 @@
 # this is an auto generated file. This will be overwritten
-query SyncTodos(
-  $filter: ModelTodoFilterInput
+
+query SyncTeams(
+  $filter: ModelTeamFilterInput
+
   $limit: Int
   $nextToken: String
   $lastSync: AWSTimestamp
 ) {
-  syncTodos(
+
+  syncTeams(
+
     filter: $filter
     limit: $limit
     nextToken: $nextToken
@@ -13,6 +17,91 @@ query SyncTodos(
   ) {
     items {
       id
+
+      name
+      tasks {
+        nextToken
+        startedAt
+      }
+
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    nextToken
+    startedAt
+  }
+}
+
+query GetTeam($id: ID!) {
+  getTeam(id: $id) {
+    id
+    name
+    tasks {
+      items {
+        id
+        teamID
+        title
+        body
+        state
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+query ListTeams(
+  $filter: ModelTeamFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listTeams(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+
+      name
+      tasks {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    nextToken
+    startedAt
+  }
+}
+query SyncTaskClasses(
+  $filter: ModelTaskClassFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncTaskClasses(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      teamID
       title
       body
       state
@@ -26,9 +115,10 @@ query SyncTodos(
     startedAt
   }
 }
-query GetTodo($id: ID!) {
-  getTodo(id: $id) {
+query GetTaskClass($id: ID!) {
+  getTaskClass(id: $id) {
     id
+    teamID
     title
     body
     state
@@ -39,14 +129,16 @@ query GetTodo($id: ID!) {
     updatedAt
   }
 }
-query ListTodos(
-  $filter: ModelTodoFilterInput
+query ListTaskClasss(
+  $filter: ModelTaskClassFilterInput
   $limit: Int
   $nextToken: String
 ) {
-  listTodos(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  listTaskClasss(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
+      teamID
+
       title
       body
       state

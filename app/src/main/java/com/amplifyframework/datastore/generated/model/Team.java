@@ -24,8 +24,8 @@ public final class Team implements Model {
   public static final QueryField ID = field("Team", "id");
   public static final QueryField NAME = field("Team", "name");
   private final @ModelField(targetType="ID", isRequired = true) String id;
-  private final @ModelField(targetType="String") String name;
-  private final @ModelField(targetType="Todo") @HasMany(associatedWith = "team", type = Todo.class) List<Todo> tasks = null;
+  private final @ModelField(targetType="String", isRequired = true) String name;
+  private final @ModelField(targetType="TaskClass") @HasMany(associatedWith = "teamID", type = TaskClass.class) List<TaskClass> tasks = null;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   public String getId() {
@@ -36,7 +36,7 @@ public final class Team implements Model {
       return name;
   }
   
-  public List<Todo> getTasks() {
+  public List<TaskClass> getTasks() {
       return tasks;
   }
   
@@ -91,7 +91,7 @@ public final class Team implements Model {
       .toString();
   }
   
-  public static BuildStep builder() {
+  public static NameStep builder() {
       return new Builder();
   }
   
@@ -114,14 +114,18 @@ public final class Team implements Model {
     return new CopyOfBuilder(id,
       name);
   }
-  public interface BuildStep {
-    Team build();
-    BuildStep id(String id);
+  public interface NameStep {
     BuildStep name(String name);
   }
   
 
-  public static class Builder implements BuildStep {
+  public interface BuildStep {
+    Team build();
+    BuildStep id(String id);
+  }
+  
+
+  public static class Builder implements NameStep, BuildStep {
     private String id;
     private String name;
     @Override
@@ -135,6 +139,7 @@ public final class Team implements Model {
     
     @Override
      public BuildStep name(String name) {
+        Objects.requireNonNull(name);
         this.name = name;
         return this;
     }

@@ -9,42 +9,44 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/viewId"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="76dp">
 
         <TextView
-            android:id="@+id/StateText"
+            android:id="@+id/titleInFrag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="64dp"
-            android:text="TextView"
+            android:text="title Placeholder"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.171" />
-
-        <TextView
-            android:id="@+id/BodyText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="56dp"
-            android:text="TextView"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/StateText"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.092"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.171" />
+            app:layout_constraintVertical_bias="0.508" />
 
         <TextView
-            android:id="@+id/TitleText"
+            android:id="@+id/stateInFrag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:text="state Placeholder"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/BodyText"
-            app:layout_constraintHorizontal_bias="0.529"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.117"
+            app:layout_constraintStart_toEndOf="@+id/titleInFrag"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.171" />
+            app:layout_constraintVertical_bias="0.508" />
+
+        <TextView
+            android:id="@+id/bodyInFrag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="body Placeholder"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.504"
+            app:layout_constraintStart_toEndOf="@+id/stateInFrag"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.508" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </FrameLayout>

@@ -1,21 +1,20 @@
 package com.example.taskmaster2;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
 
-import android.content.Context;
 import android.content.Intent;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.RadioButton;
 
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.core.Amplify;
-import com.amplifyframework.datastore.generated.model.Todo;
+import com.amplifyframework.datastore.generated.model.TaskClass;
+
 
 public class AddTask extends AppCompatActivity {
     //    AppDatabase appDatabase;
@@ -23,50 +22,63 @@ public class AddTask extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
+//        Button addToDbButton = findViewById(R.id.AddToDB);
 
-        Button addTaskButton = findViewById(R.id.buttonAddTask);
-        EditText title = findViewById(R.id.editTextTaskTitle);
-        EditText body = findViewById(R.id.editTextDescription);
-        EditText state = findViewById(R.id.editTextTaskState);
-
-        addTaskButton.setOnClickListener(new View.OnClickListener() {
+        Button addToDbButton = findViewById(R.id.AddToDB);
+        addToDbButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View V) {
-
-                Todo todo = Todo.builder()
-                        .title(title.getText().toString())
-                        .body(body.getText().toString())
-                        .state(state.getText().toString())
-                        .build();
-                Log.i("MyAmplifyApp", "onClick: " + todo.getTitle());
+            public void onClick(View v){
 
 
+                EditText titleField = findViewById(R.id.Field1ID);
+                String title = titleField.getText().toString();
 
-                Amplify.API.mutate(
-                        ModelMutation.create(todo),
-                        response -> Log.i("MyAmplifyApp", "Added Todo with id: " + response.getData().getId()),
-                        error -> Log.e("MyAmplifyApp", "Create failed", error)
+                EditText bodyField = findViewById(R.id.Field2ID);
+                String body = bodyField.getText().toString();
+
+                EditText stateField = findViewById(R.id.Field3ID);
+                String state = stateField.getText().toString();
+
+
+                RadioButton b1=findViewById(R.id.radioButton1);
+                RadioButton b2=findViewById(R.id.radioButton2);
+                RadioButton b3=findViewById(R.id.radioButton3);
+
+
+                String id = null;
+                if(b1.isChecked()){
+                    id="1";
+                }
+                else if(b2.isChecked()){
+                    id="2";
+                }
+                else if(b3.isChecked()){
+                    id="3";
+                }
+
+                dataStore(title, body, state,id);
+                System.out.println(  "Task ID is " + title
                 );
 
-                Toast.makeText(getApplicationContext(), "submitted!", Toast.LENGTH_SHORT).show();
-                Intent goToHome = new Intent(AddTask.this, MainActivity.class);
-                startActivity(goToHome);
-
-//                Task newTask = new Task(title.getText().toString(), body.getText().toString(), state.getText().toString());
-//                appDatabase = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "tasksDatabase").allowMainThreadQueries().build();
-//                appDatabase.taskDao().insertAll(newTask);
+                Intent intent = new Intent(AddTask.this, MainActivity.class);
+                startActivity(intent);
 
             }
+
         });
 
-        //        Button homeButton = findViewById(R.id.homeAddTask);
-//        homeButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View V) {
-//                Intent goToHome = new Intent(AddTask.this, MainActivity.class);
-//                startActivity(goToHome);
-//            }
-//        });
+    }
+
+    private void dataStore(String title, String body, String state,String id) {
+        TaskClass task = TaskClass.builder().teamId(id).title(title).body(body).state(state).build();
+
+
+        Amplify.API.mutate(ModelMutation.create(task),succuess-> {
+            Log.i("Add Task", "Saved to DYNAMODB");
+        }, error -> {
+            Log.i("Add Task", "error saving to DYNAMODB");
+        });
 
     }
+
 }

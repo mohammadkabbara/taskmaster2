@@ -16,15 +16,18 @@ import com.amplifyframework.core.model.query.predicate.QueryField;
 
 import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 
-/** This is an auto generated class representing the Todo type in your schema. */
+/** This is an auto generated class representing the TaskClass type in your schema. */
 @SuppressWarnings("all")
-@ModelConfig(pluralName = "Todos")
-public final class Todo implements Model {
-  public static final QueryField ID = field("Todo", "id");
-  public static final QueryField TITLE = field("Todo", "title");
-  public static final QueryField BODY = field("Todo", "body");
-  public static final QueryField STATE = field("Todo", "state");
+@ModelConfig(pluralName = "TaskClasses")
+@Index(name = "byTeam", fields = {"teamID","title"})
+public final class TaskClass implements Model {
+  public static final QueryField ID = field("TaskClass", "id");
+  public static final QueryField TEAM_ID = field("TaskClass", "teamID");
+  public static final QueryField TITLE = field("TaskClass", "title");
+  public static final QueryField BODY = field("TaskClass", "body");
+  public static final QueryField STATE = field("TaskClass", "state");
   private final @ModelField(targetType="ID", isRequired = true) String id;
+  private final @ModelField(targetType="ID", isRequired = true) String teamID;
   private final @ModelField(targetType="String", isRequired = true) String title;
   private final @ModelField(targetType="String") String body;
   private final @ModelField(targetType="String") String state;
@@ -32,6 +35,10 @@ public final class Todo implements Model {
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   public String getId() {
       return id;
+  }
+  
+  public String getTeamId() {
+      return teamID;
   }
   
   public String getTitle() {
@@ -54,8 +61,9 @@ public final class Todo implements Model {
       return updatedAt;
   }
   
-  private Todo(String id, String title, String body, String state) {
+  private TaskClass(String id, String teamID, String title, String body, String state) {
     this.id = id;
+    this.teamID = teamID;
     this.title = title;
     this.body = body;
     this.state = state;
@@ -68,13 +76,14 @@ public final class Todo implements Model {
       } else if(obj == null || getClass() != obj.getClass()) {
         return false;
       } else {
-      Todo todo = (Todo) obj;
-      return ObjectsCompat.equals(getId(), todo.getId()) &&
-              ObjectsCompat.equals(getTitle(), todo.getTitle()) &&
-              ObjectsCompat.equals(getBody(), todo.getBody()) &&
-              ObjectsCompat.equals(getState(), todo.getState()) &&
-              ObjectsCompat.equals(getCreatedAt(), todo.getCreatedAt()) &&
-              ObjectsCompat.equals(getUpdatedAt(), todo.getUpdatedAt());
+      TaskClass taskClass = (TaskClass) obj;
+      return ObjectsCompat.equals(getId(), taskClass.getId()) &&
+              ObjectsCompat.equals(getTeamId(), taskClass.getTeamId()) &&
+              ObjectsCompat.equals(getTitle(), taskClass.getTitle()) &&
+              ObjectsCompat.equals(getBody(), taskClass.getBody()) &&
+              ObjectsCompat.equals(getState(), taskClass.getState()) &&
+              ObjectsCompat.equals(getCreatedAt(), taskClass.getCreatedAt()) &&
+              ObjectsCompat.equals(getUpdatedAt(), taskClass.getUpdatedAt());
       }
   }
   
@@ -82,6 +91,7 @@ public final class Todo implements Model {
    public int hashCode() {
     return new StringBuilder()
       .append(getId())
+      .append(getTeamId())
       .append(getTitle())
       .append(getBody())
       .append(getState())
@@ -94,8 +104,9 @@ public final class Todo implements Model {
   @Override
    public String toString() {
     return new StringBuilder()
-      .append("Todo {")
+      .append("TaskClass {")
       .append("id=" + String.valueOf(getId()) + ", ")
+      .append("teamID=" + String.valueOf(getTeamId()) + ", ")
       .append("title=" + String.valueOf(getTitle()) + ", ")
       .append("body=" + String.valueOf(getBody()) + ", ")
       .append("state=" + String.valueOf(getState()) + ", ")
@@ -105,7 +116,7 @@ public final class Todo implements Model {
       .toString();
   }
   
-  public static TitleStep builder() {
+  public static TeamIdStep builder() {
       return new Builder();
   }
   
@@ -117,9 +128,10 @@ public final class Todo implements Model {
    * @param id the id of the existing item this instance will represent
    * @return an instance of this model with only ID populated
    */
-  public static Todo justId(String id) {
-    return new Todo(
+  public static TaskClass justId(String id) {
+    return new TaskClass(
       id,
+      null,
       null,
       null,
       null
@@ -128,37 +140,52 @@ public final class Todo implements Model {
   
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
+      teamID,
       title,
       body,
       state);
   }
+  public interface TeamIdStep {
+    TitleStep teamId(String teamId);
+  }
+  
+
   public interface TitleStep {
     BuildStep title(String title);
   }
   
 
   public interface BuildStep {
-    Todo build();
+    TaskClass build();
     BuildStep id(String id);
     BuildStep body(String body);
     BuildStep state(String state);
   }
   
 
-  public static class Builder implements TitleStep, BuildStep {
+  public static class Builder implements TeamIdStep, TitleStep, BuildStep {
     private String id;
+    private String teamID;
     private String title;
     private String body;
     private String state;
     @Override
-     public Todo build() {
+     public TaskClass build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
         
-        return new Todo(
+        return new TaskClass(
           id,
+          teamID,
           title,
           body,
           state);
+    }
+    
+    @Override
+     public TitleStep teamId(String teamId) {
+        Objects.requireNonNull(teamId);
+        this.teamID = teamId;
+        return this;
     }
     
     @Override
@@ -192,11 +219,17 @@ public final class Todo implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String title, String body, String state) {
+    private CopyOfBuilder(String id, String teamId, String title, String body, String state) {
       super.id(id);
-      super.title(title)
+      super.teamId(teamId)
+        .title(title)
         .body(body)
         .state(state);
+    }
+    
+    @Override
+     public CopyOfBuilder teamId(String teamId) {
+      return (CopyOfBuilder) super.teamId(teamId);
     }
     
     @Override
