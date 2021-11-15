@@ -61,6 +61,7 @@ public class AddTask extends AppCompatActivity {
                 );
 
                 Intent intent = new Intent(AddTask.this, MainActivity.class);
+                intent.putExtra("STRING_I_NEED", "configure problem");
                 startActivity(intent);
 
             }
