@@ -1,5 +1,4 @@
 
-
 type Team @model {
   id: ID!
   name: String!
@@ -12,6 +11,11 @@ type TaskClass @model @key(name: "byTeam", fields: ["teamID", "title"]) {
   title : String!
   body : String
   state : String
+  fileName: String
 }
-
-
+type User
+@model
+{
+  id: ID!
+  name: String
+}

@@ -46,6 +46,7 @@ query GetTeam($id: ID!) {
         title
         body
         state
+        fileName
         _version
         _deleted
         _lastChangedAt
@@ -105,6 +106,7 @@ query SyncTaskClasses(
       title
       body
       state
+      fileName
       _version
       _deleted
       _lastChangedAt
@@ -122,6 +124,7 @@ query GetTaskClass($id: ID!) {
     title
     body
     state
+    fileName
     _version
     _deleted
     _lastChangedAt
@@ -142,6 +145,62 @@ query ListTaskClasss(
       title
       body
       state
+      fileName
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    nextToken
+    startedAt
+  }
+}
+query SyncUsers(
+  $filter: ModelUserFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncUsers(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      name
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+    nextToken
+    startedAt
+  }
+}
+query GetUser($id: ID!) {
+  getUser(id: $id) {
+    id
+    name
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+query ListUsers(
+  $filter: ModelUserFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
       _version
       _deleted
       _lastChangedAt

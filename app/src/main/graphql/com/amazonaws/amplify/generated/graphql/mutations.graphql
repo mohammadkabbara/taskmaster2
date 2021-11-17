@@ -14,6 +14,7 @@ mutation CreateTeam(
         title
         body
         state
+        fileName
         _version
         _deleted
         _lastChangedAt
@@ -46,6 +47,7 @@ mutation UpdateTeam(
         title
         body
         state
+        fileName
         _version
         _deleted
         _lastChangedAt
@@ -78,6 +80,7 @@ mutation DeleteTeam(
         title
         body
         state
+        fileName
         _version
         _deleted
         _lastChangedAt
@@ -104,6 +107,7 @@ mutation CreateTaskClass(
     title
     body
     state
+    fileName
     _version
     _deleted
     _lastChangedAt
@@ -121,6 +125,7 @@ mutation UpdateTaskClass(
     title
     body
     state
+    fileName
     _version
     _deleted
     _lastChangedAt
@@ -139,6 +144,49 @@ mutation DeleteTaskClass(
     title
     body
     state
+    fileName
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation CreateUser(
+  $input: CreateUserInput!
+  $condition: ModelUserConditionInput
+) {
+  createUser(input: $input, condition: $condition) {
+    id
+    name
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation UpdateUser(
+  $input: UpdateUserInput!
+  $condition: ModelUserConditionInput
+) {
+  updateUser(input: $input, condition: $condition) {
+    id
+    name
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+mutation DeleteUser(
+  $input: DeleteUserInput!
+  $condition: ModelUserConditionInput
+) {
+  deleteUser(input: $input, condition: $condition) {
+    id
+    name
     _version
     _deleted
     _lastChangedAt

@@ -11,6 +11,7 @@ subscription OnCreateTeam {
         title
         body
         state
+        fileName
         _version
         _deleted
         _lastChangedAt
@@ -40,6 +41,7 @@ subscription OnUpdateTeam {
         title
         body
         state
+        fileName
         _version
         _deleted
         _lastChangedAt
@@ -69,6 +71,7 @@ subscription OnDeleteTeam {
         title
         body
         state
+        fileName
         _version
         _deleted
         _lastChangedAt
@@ -92,6 +95,7 @@ subscription OnCreateTaskClass {
     title
     body
     state
+    fileName
     _version
     _deleted
     _lastChangedAt
@@ -106,6 +110,7 @@ subscription OnUpdateTaskClass {
     title
     body
     state
+    fileName
     _version
     _deleted
     _lastChangedAt
@@ -121,6 +126,40 @@ subscription OnDeleteTaskClass {
     title
     body
     state
+    fileName
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+subscription OnCreateUser {
+  onCreateUser {
+    id
+    name
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+subscription OnUpdateUser {
+  onUpdateUser {
+    id
+    name
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+  }
+}
+subscription OnDeleteUser {
+  onDeleteUser {
+    id
+    name
     _version
     _deleted
     _lastChangedAt

@@ -16,6 +16,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.datastore.generated.model.TaskClass;
 
 import com.amplifyframework.AmplifyException;
@@ -25,6 +27,8 @@ import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
 import com.amplifyframework.datastore.generated.model.Team;
+import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
+//import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +38,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class MainActivity extends AppCompatActivity {
-
+    private static final String TAG = "MainActivity";
     private TaskAdapter adapter;
 
 
@@ -61,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
         personTasks.setText(enteredName + "'s Tasks");
 
         ////////
-if (reciveputExtraFromAddTask == null){
+//if (reciveputExtraFromAddTask == null){
     configureAmplify();
-}
+//}
 ////////
 
         creatTeams();
@@ -81,7 +85,15 @@ if (reciveputExtraFromAddTask == null){
         allTasksRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         allTasksRecyclerView.setAdapter(new TaskAdapter(tasks));
 
+        Button button2Page = findViewById(R.id.TaskDetailBtn);
+        button2Page.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                Intent intent2 = new Intent(MainActivity.this, TaskDetail.class);
+                startActivity(intent2);
+            }
 
+        });
 
 
         Button button2Page1 = findViewById(R.id.Button3);
@@ -140,16 +152,29 @@ if (reciveputExtraFromAddTask == null){
         TextView tasks = findViewById(R.id.Message);
         tasks.setText(enteredName + "'s Tasks");
     }
-
+//    private void configureAmplify() {
+//        try {
+//            Amplify.addPlugin(new AWSDataStorePlugin());
+//            Amplify.addPlugin(new AWSApiPlugin());
+//            Amplify.addPlugin(new AWSCognitoAuthPlugin());
+//            Amplify.addPlugin(new AWSS3StoragePlugin());
+//            Amplify.configure(getApplicationContext());
+//            Log.i(TAG, "Initialized Amplify");
+//        } catch (AmplifyException error) {
+//            Log.e(TAG, "Could not initialize Amplify", error);
+//        }
+//    }
     private void configureAmplify() {
         try {
             Amplify.addPlugin(new AWSDataStorePlugin());
             Amplify.addPlugin(new AWSApiPlugin());
-            Amplify.configure(getApplicationContext());
+            Amplify.addPlugin(new AWSCognitoAuthPlugin());
+            Amplify.addPlugin(new AWSS3StoragePlugin());
+           Amplify.configure(getApplicationContext());
             Log.i("Main", "Initialized Amplify");
         } catch (AmplifyException error) {
             Log.e("Main", "Could not initialize Amplify", error);
-        }}
+       }}
 
     private  List<TaskClass> GetData( RecyclerView allTaskDataRecyclerView ){
         Handler handler = new Handler(Looper.myLooper(), new Handler.Callback() {

@@ -2,6 +2,7 @@ package com.example.taskmaster2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import com.amplifyframework.datastore.generated.model.Team;
 
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class Settings extends AppCompatActivity {
 
@@ -64,7 +66,9 @@ public class Settings extends AppCompatActivity {
             editor.putString("Team",id);
             editor.putString("EnteredText",name);
             editor.apply();
-
+//            Context context = getApplicationContext();
+//            Toast.makeText(context, "Saved!", Toast.LENGTH_LONG).show();
+//
 
         });
 
