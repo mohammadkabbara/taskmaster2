@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,30 +42,35 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         Context context = viewHolder.itemView.getContext();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
         TaskClass task= allTasksData.get(position);
         viewHolder.textViewTitle.setText(task.getTitle());
         viewHolder.textViewBody.setText(task.getBody());
         viewHolder.textViewState.setText(task.getState());
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-        SharedPreferences.Editor editor = sharedPreferences.edit();
         viewHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("my Adapter", "Element "+ viewHolder.getAdapterPosition() + " clicked");
-
-                String Task1 =viewHolder.textViewTitle.getText().toString();
-                editor.putString("TaskName",Task1);
+                Toast.makeText(context,"Submitted!", Toast.LENGTH_SHORT).show();
+                String title =viewHolder.textViewTitle.getText().toString();
+                editor.putString("title", title);
+                String body =viewHolder.textViewBody.getText().toString();
+                editor.putString("body", body);
+                String state =viewHolder.textViewState.getText().toString();
+                editor.putString("state", state);
+                String name=task.getFileName();
+                editor.putString("Filename",name);
                 editor.apply();
+
                 Intent gotToStd = new Intent(context,TaskDetail.class);
                 context.startActivity(gotToStd);
-//
+
             }
 
-
         });
-
     }
 
     @Override
@@ -81,10 +87,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewTitle= (TextView)  itemView.findViewById(R.id.title);
-            textViewBody= (TextView)  itemView.findViewById(R.id.body);
-            textViewState= (TextView)  itemView.findViewById(R.id.state);
-            linearLayout=(LinearLayout) itemView.findViewById(R.id.layout);
+            textViewTitle = (TextView)  itemView.findViewById(R.id.title);
+            textViewBody = (TextView)  itemView.findViewById(R.id.body);
+            textViewState = (TextView)  itemView.findViewById(R.id.state);
+            linearLayout =(LinearLayout) itemView.findViewById(R.id.layout);
 
         }
     }

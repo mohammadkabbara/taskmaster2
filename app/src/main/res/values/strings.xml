@@ -5,4 +5,12 @@
     <string name="title" />
     <string name="body" />
     <string name="state" />
+    <string name="upload_file" />
+    <string name="todo" />
+    <string name="download_the_linked_file" />
+    <string name="team_3" />
+    <string name="team_2" />
+    <string name="team_1" />
+    <string name="teams" />
+    <string name="add_task" />
 </resources>
