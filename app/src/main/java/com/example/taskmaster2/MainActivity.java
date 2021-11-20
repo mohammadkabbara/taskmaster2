@@ -27,10 +27,8 @@ import com.amazonaws.mobile.client.UserStateDetails;
 import com.amazonaws.mobile.config.AWSConfiguration;
 import com.amazonaws.mobileconnectors.pinpoint.PinpointConfiguration;
 import com.amazonaws.mobileconnectors.pinpoint.PinpointManager;
-import com.amazonaws.mobileconnectors.pinpoint.analytics.AnalyticsEvent;
-import com.amazonaws.mobileconnectors.pinpoint.targeting.TargetingClient;
-import com.amazonaws.mobileconnectors.pinpoint.targeting.endpointProfile.EndpointProfile;
-import com.amazonaws.mobileconnectors.pinpoint.targeting.endpointProfile.EndpointProfileUser;
+import com.amplifyframework.analytics.AnalyticsEvent;
+import com.amplifyframework.analytics.pinpoint.AWSPinpointAnalyticsPlugin;
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.datastore.generated.model.TaskClass;
 
@@ -84,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         ////////
 //if (reciveputExtraFromAddTask == null){
     configureAmplify();
+        recordEvents();
 
 //        assignUserIdToEndpoint();
         getPinpointManager(getApplicationContext());
@@ -193,8 +192,10 @@ public class MainActivity extends AppCompatActivity {
 //    }
     private void configureAmplify() {
         try {
-            Amplify.addPlugin(new AWSDataStorePlugin());
             Amplify.addPlugin(new AWSApiPlugin());
+            Amplify.addPlugin(new AWSDataStorePlugin());
+            Amplify.addPlugin(new AWSPinpointAnalyticsPlugin(getApplication()));
+
             Amplify.addPlugin(new AWSCognitoAuthPlugin());
             Amplify.addPlugin(new AWSS3StoragePlugin());
            Amplify.configure(getApplicationContext());
@@ -403,7 +404,17 @@ public class MainActivity extends AppCompatActivity {
 //        Log.d("TAG", "Assigned user ID " + endpointProfileUser.getUserId() +
 //                " to endpoint " + endpointProfile.getEndpointId());
 //    }
+public void recordEvents() {
+    AnalyticsEvent event = AnalyticsEvent.builder()
+            .name("PasswordReset")
+            .addProperty("Channel", "SMS")
+            .addProperty("Successful", true)
+            .addProperty("ProcessDuration", 792)
+            .addProperty("UserAge", 120.3)
+            .build();
 
+    Amplify.Analytics.recordEvent(event);
+}
 
 
 
