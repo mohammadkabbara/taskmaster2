@@ -1,0 +1,22 @@
+{
+    "appName": "taskMasterPinPoint",
+    "roleName": "pinpointLambdaRole36ce2e81",
+    "cloudformationPolicyName": "cloudformationPolicy36ce2e81",
+    "cloudWatchPolicyName": "cloudWatchPolicy36ce2e81",
+    "pinpointPolicyName": "pinpointPolicy36ce2e81",
+    "authPolicyName": "pinpoint_amplify_36ce2e81",
+    "unauthPolicyName": "pinpoint_amplify_36ce2e81",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    },
+    "appId": "df31cf3be15a478f8fb1a735ee86b617"
+}
