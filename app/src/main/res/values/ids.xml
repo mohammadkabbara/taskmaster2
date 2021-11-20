@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <item name="Button3" type="id" />
     <item name="TaskID" type="id" />
     <item name="Message" type="id" />
     <item name="TaskViewer" type="id" />
+
 </resources>
