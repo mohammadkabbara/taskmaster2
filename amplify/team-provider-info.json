@@ -1,4 +1,5 @@
 {
+
     "dev": {
         "awscloudformation": {
             "AuthRoleName": "amplify-taskmaster2-dev-194343-authRole",
@@ -11,6 +12,7 @@
             "StackId": "arn:aws:cloudformation:eu-central-1:020882138624:stack/amplify-taskmaster2-dev-194343/6e7e8490-40bb-11ec-b842-060e0e86844c",
             "AmplifyAppId": "d1qhvs7wla1sez"
         }
+
     },
     "def": {
         "awscloudformation": {
