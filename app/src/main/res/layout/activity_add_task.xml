@@ -208,5 +208,20 @@
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:text="Team 3" />
+
     </RadioGroup>
+
+    <ImageView
+        android:id="@+id/imageView_showFromS3"
+        android:layout_width="161dp"
+        android:layout_height="255dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/button3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.852"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.812"
+        app:srcCompat="@android:drawable/picture_frame" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
