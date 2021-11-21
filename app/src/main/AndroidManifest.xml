@@ -50,10 +50,23 @@
             android:name=".AllTasks"
             android:exported="true"
             android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".AddTask"
-            android:exported="true"
-            android:parentActivityName=".MainActivity" />
+<!--        <activity-->
+<!--            android:name=".AddTask"-->
+<!--            android:exported="true"-->
+<!--            android:parentActivityName=".MainActivity" />-->
+
+        <activity android:name=".AddTask"
+            android:parentActivityName=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <!--                <data android:mimeType="text/plain" />-->
+                <data android:mimeType="image/*" />
+            </intent-filter>
+        </activity>
+
+
         <activity
             android:name=".MainActivity"
             android:exported="true" >
